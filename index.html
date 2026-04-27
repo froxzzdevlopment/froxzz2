@@ -571,6 +571,161 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
   color:#4f46e5;
 }
 .copyable-contact:hover .copy-hint-icon{opacity:.85;}
+
+/* ══════════════════════════════════════
+   1. WA SMART NUDGE BUBBLE
+   ══════════════════════════════════════ */
+#wa-nudge{position:fixed;z-index:10001;pointer-events:none;transition:opacity .4s ease,transform .4s ease}
+#wa-nudge.nudge-show{pointer-events:auto}
+#wa-nudge.nudge-hide{opacity:0!important;transform:translateY(8px) scale(.95)!important}
+.nudge-inner{
+  background:linear-gradient(135deg,#1a1a2e,#16213e);
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  padding:11px 15px;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.35);
+  white-space:nowrap;position:relative;border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);line-height:1.4;max-width:240px;white-space:normal;
+}
+[data-theme="light"] .nudge-inner{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+.nudge-arrow{
+  position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;background:inherit;
+  clip-path:polygon(0 0,100% 0,50% 100%);border-radius:0 0 3px 3px;
+}
+.nudge-close{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.2);
+  cursor:pointer;margin-left:8px;font-size:11px;line-height:1;
+  vertical-align:middle;flex-shrink:0;transition:background .2s;
+}
+.nudge-close:hover{background:rgba(255,255,255,.35)}
+
+/* ══════════════════════════════════════
+   2. IMPACT IN NUMBERS — STATS COUNTER
+   ══════════════════════════════════════ */
+#stats-section{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:72px 24px}
+[data-theme="dark"] #stats-section{background:linear-gradient(135deg,#1e1b4b 0%,#2e1065 100%)}
+.stat-card{
+  text-align:center;padding:32px 20px;border-radius:20px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(8px);transition:transform .3s;
+}
+.stat-card:hover{transform:translateY(-4px)}
+.stat-number{
+  font-family:'Syne',sans-serif;font-size:clamp(2.2rem,4vw,3.2rem);
+  font-weight:800;color:#fff;line-height:1;display:block;margin-bottom:6px;
+}
+.stat-suffix{font-size:0.7em;vertical-align:super;font-weight:700}
+.stat-label{color:rgba(255,255,255,.82);font-size:14px;font-weight:500}
+
+/* ══════════════════════════════════════
+   3. LIVE GMB RANKING BADGE
+   ══════════════════════════════════════ */
+.gmb-live-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);
+  border-radius:50px;padding:10px 20px;font-size:13px;
+  color:#059669;font-weight:600;margin-bottom:28px;
+}
+[data-theme="dark"] .gmb-live-badge{background:rgba(16,185,129,.12);color:#34d399;border-color:rgba(16,185,129,.3)}
+.live-dot-wrap{position:relative;width:10px;height:10px;flex-shrink:0}
+.live-dot{width:10px;height:10px;background:#10b981;border-radius:50%;display:block}
+.live-dot-ring{
+  position:absolute;top:-3px;left:-3px;width:16px;height:16px;
+  border-radius:50%;border:2px solid #10b981;
+  animation:live-pulse 1.6s ease-in-out infinite;opacity:0;
+}
+@keyframes live-pulse{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.live-ticker{font-size:12px;font-weight:400;color:var(--text3);margin-left:4px}
+#live-city{font-weight:700;color:inherit}
+#live-time{font-weight:700;color:inherit}
+
+/* ══════════════════════════════════════
+   4. INTERACTIVE PRICE ESTIMATOR
+   ══════════════════════════════════════ */
+.estimator-wrap{
+  border-radius:28px;padding:40px;margin-bottom:48px;
+  border:1px solid var(--border);background:var(--surface);
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+}
+[data-theme="dark"] .estimator-wrap{box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.est-slider{
+  -webkit-appearance:none;appearance:none;width:100%;height:6px;
+  border-radius:6px;background:linear-gradient(90deg,#4f46e5 var(--val,50%),var(--surface3) var(--val,50%));
+  outline:none;cursor:pointer;
+}
+.est-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:22px;height:22px;
+  border-radius:50%;background:#4f46e5;cursor:pointer;border:3px solid #fff;
+  box-shadow:0 2px 8px rgba(79,70,229,.4);transition:transform .15s;
+}
+.est-slider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.est-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#4f46e5;cursor:pointer;border:3px solid #fff;box-shadow:0 2px 8px rgba(79,70,229,.4)}
+.est-toggle{
+  position:relative;width:52px;height:28px;cursor:pointer;
+}
+.est-toggle input{opacity:0;width:0;height:0;position:absolute}
+.est-toggle-track{
+  position:absolute;inset:0;background:var(--surface3);border-radius:28px;
+  transition:background .25s;
+}
+.est-toggle input:checked~.est-toggle-track{background:#4f46e5}
+.est-toggle-thumb{
+  position:absolute;left:4px;top:4px;width:20px;height:20px;
+  background:#fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.2);
+  transition:transform .25s;
+}
+.est-toggle input:checked~.est-toggle-track~.est-toggle-thumb,
+.est-toggle input:checked+.est-toggle-track+.est-toggle-thumb{transform:translateX(24px)}
+.est-price-box{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:20px;
+  padding:28px 32px;text-align:center;color:#fff;margin-top:28px;
+}
+.est-total-num{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:800;display:block;
+}
+.est-wa-btn{
+  display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+  background:#25d366;color:#fff;font-weight:700;font-size:14px;
+  padding:12px 28px;border-radius:50px;text-decoration:none;
+  transition:background .2s,transform .2s;box-shadow:0 4px 16px rgba(37,211,102,.35);
+}
+.est-wa-btn:hover{background:#1ebe5d;transform:translateY(-2px)}
+
+/* ══════════════════════════════════════
+   5. HOW WE WORK — GLASSMORPHISM TIMELINE
+   ══════════════════════════════════════ */
+#work-timeline{padding:80px 24px;background:var(--surface2)}
+[data-theme="dark"] #work-timeline{background:#020617}
+.timeline-step{
+  display:flex;align-items:flex-start;gap:24px;opacity:0;
+  transform:translateY(32px);transition:opacity .55s ease,transform .55s ease;
+  margin-bottom:32px;
+}
+.timeline-step.tl-visible{opacity:1;transform:translateY(0)}
+.tl-connector{
+  display:flex;flex-direction:column;align-items:center;flex-shrink:0;
+}
+.tl-icon{
+  width:56px;height:56px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  font-size:22px;position:relative;z-index:1;
+  border:1.5px solid rgba(255,255,255,.2);
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
+}
+.tl-line{width:2px;flex:1;min-height:32px;background:linear-gradient(to bottom,rgba(79,70,229,.3),transparent);margin-top:6px}
+.tl-card{
+  flex:1;border-radius:20px;padding:24px 28px;
+  background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.5);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 4px 24px rgba(0,0,0,.07);
+}
+[data-theme="dark"] .tl-card{background:rgba(30,41,59,.6);border-color:rgba(255,255,255,.08);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.tl-step-num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4f46e5;margin-bottom:4px}
+[data-theme="dark"] .tl-step-num{color:#818cf8}
+.tl-card h4{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.tl-card p{font-size:14px;color:var(--text2);line-height:1.6;margin:0}
 </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -593,6 +748,15 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
   <span class="wa-ring"></span>
   <svg class="w-7 h-7" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<!-- ══ WA SMART NUDGE BUBBLE ══ -->
+<div id="wa-nudge" style="display:none;position:fixed;z-index:10001;">
+  <div class="nudge-inner">
+    <span style="vertical-align:middle">👋 Hi! Website design ya GMB ranking mein help chahiye?</span>
+    <span class="nudge-close" id="nudge-close-btn" title="Close">✕</span>
+    <div class="nudge-arrow" id="nudge-arrow"></div>
+  </div>
+</div>
 
 <!-- BLOG MODAL -->
 <div class="blog-modal-overlay" id="blog-modal-overlay" onclick="closeBlogModal(event)">
@@ -860,6 +1024,90 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
       </div>
     </div>
   </div>
+
+  <!-- ══ IMPACT IN NUMBERS ══ -->
+  <div id="stats-section">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p style="color:rgba(255,255,255,.65);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px">Our Impact</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:#fff;margin:0">Impact in Numbers</h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="stats-grid">
+        <div class="stat-card" data-target="100" data-suffix="+">
+          <span class="stat-number"><span class="stat-count">0</span><span class="stat-suffix">+</span></span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat-card" data-target="50" data-suffix="+">
+          <span class="stat-number"><span class="stat-count">0</span><span class="stat-suffix">+</span></span>
+          <span class="stat-label">Cities Served</span>
+        </div>
+        <div class="stat-card" data-target="500" data-suffix="+">
+          <span class="stat-number"><span class="stat-count">0</span><span class="stat-suffix">+</span></span>
+          <span class="stat-label">Leads Generated</span>
+        </div>
+        <div class="stat-card" data-target="4.9" data-suffix="/5" data-decimal="1">
+          <span class="stat-number"><span class="stat-count">0</span><span class="stat-suffix">/5</span></span>
+          <span class="stat-label">Client Rating ⭐</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HOW WE WORK TIMELINE ══ -->
+  <div id="work-timeline">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-indigo-600 font-semibold tracking-widest uppercase text-xs mb-3">Our Process</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:var(--text);margin:0">How We Work</h2>
+      </div>
+      <div id="timeline-list">
+        <div class="timeline-step" data-tl="0">
+          <div class="tl-connector">
+            <div class="tl-icon" style="background:linear-gradient(135deg,rgba(79,70,229,.15),rgba(79,70,229,.3))">🎯</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <p class="tl-step-num">Step 01</p>
+            <h4>Strategy &amp; Discovery</h4>
+            <p>Free consultation par aapka business, goals, aur target audience samajhte hain. Competitor analysis aur keyword research se solid foundation banate hain.</p>
+          </div>
+        </div>
+        <div class="timeline-step" data-tl="1">
+          <div class="tl-connector">
+            <div class="tl-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(124,58,237,.3))">💻</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <p class="tl-step-num">Step 02</p>
+            <h4>Design &amp; Development</h4>
+            <p>Custom design banate hain jo aapke brand ko perfectly represent kare. Mobile-first, fast-loading, aur conversion-optimized website develop karte hain.</p>
+          </div>
+        </div>
+        <div class="timeline-step" data-tl="2">
+          <div class="tl-connector">
+            <div class="tl-icon" style="background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.3))">📍</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <p class="tl-step-num">Step 03</p>
+            <h4>GMB Optimization</h4>
+            <p>Google Business Profile setup, local keywords integration, photos aur posts se aapki business Google Maps pe top par rank karati hai.</p>
+          </div>
+        </div>
+        <div class="timeline-step" data-tl="3">
+          <div class="tl-connector">
+            <div class="tl-icon" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.3))">🚀</div>
+          </div>
+          <div class="tl-card">
+            <p class="tl-step-num">Step 04</p>
+            <h4>Launch &amp; Growth</h4>
+            <p>Website live hoti hai, monthly reports milte hain aur ongoing support se aapka business continuously grow karta rehta hai.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- SERVICES -->
@@ -893,6 +1141,13 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
       <p class="text-indigo-600 font-semibold tracking-widest uppercase text-xs mb-3" data-i18n="portfolio_label">Our Work</p>
       <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color:var(--text)" data-i18n="portfolio_title">Portfolio</h1>
       <p class="text-lg" style="color:var(--text2)" data-i18n="portfolio_sub">Real websites built for real businesses. Click on any card to preview the website live.</p>
+      <!-- Live Ranking Badge -->
+      <div class="flex justify-center mt-6">
+        <div class="gmb-live-badge">
+          <div class="live-dot-wrap"><span class="live-dot"></span><span class="live-dot-ring"></span></div>
+          <span>Live Ranking Status &nbsp;·&nbsp; Last GMB Success: <span id="live-time">2 hours</span> ago in <span id="live-city">Pune</span></span>
+        </div>
+      </div>
     </div>
     <div class="flex flex-wrap justify-center gap-3 mb-12">
       <button class="portfolio-cat-btn active" onclick="filterPortfolio('all', this)">All</button>
@@ -991,6 +1246,59 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
       <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color:var(--text)" data-i18n="pricing_title">Simple, Honest Pricing</h1>
       <p class="text-lg" style="color:var(--text2)" data-i18n="pricing_sub">No hidden charges. No surprises. Pick the plan that fits your business.</p>
     </div>
+
+    <!-- ══ INTERACTIVE PRICE ESTIMATOR ══ -->
+    <div class="estimator-wrap max-w-3xl mx-auto mb-10">
+      <div class="text-center mb-8">
+        <p class="text-indigo-600 font-semibold tracking-widest uppercase text-xs mb-2">🧮 Free Tool</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text);margin:0 0 6px">Price Estimator</h2>
+        <p style="color:var(--text2);font-size:14px">Apni zaroorat choose karo aur estimate pao instantly!</p>
+      </div>
+      <!-- Pages Slider -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-3">
+          <label style="font-weight:600;color:var(--text);font-size:15px">📄 Website Pages</label>
+          <span style="background:var(--ind-light);color:#4f46e5;font-weight:700;font-size:14px;padding:4px 14px;border-radius:20px" id="pages-display">4 Pages</span>
+        </div>
+        <input type="range" class="est-slider" id="pages-slider" min="4" max="12" value="4" step="1" oninput="updateEstimator()">
+        <div class="flex justify-between" style="color:var(--text3);font-size:12px;margin-top:6px"><span>4 Pages</span><span>8 Pages</span><span>12 Pages</span></div>
+      </div>
+      <!-- GMB Toggle -->
+      <div class="flex items-center justify-between p-5 rounded-2xl mb-4" style="background:var(--surface2);border:1px solid var(--border)">
+        <div>
+          <p style="font-weight:600;color:var(--text);font-size:15px;margin:0 0 2px">📍 GMB Management</p>
+          <p style="font-size:13px;color:var(--text2);margin:0">Local SEO + Monthly Ranking Report</p>
+        </div>
+        <label class="est-toggle">
+          <input type="checkbox" id="gmb-toggle" onchange="updateEstimator()">
+          <div class="est-toggle-track"></div>
+          <div class="est-toggle-thumb"></div>
+        </label>
+      </div>
+      <!-- Advanced SEO Toggle -->
+      <div class="flex items-center justify-between p-5 rounded-2xl mb-6" style="background:var(--surface2);border:1px solid var(--border)">
+        <div>
+          <p style="font-weight:600;color:var(--text);font-size:15px;margin:0 0 2px">🔍 Advanced SEO Setup</p>
+          <p style="font-size:13px;color:var(--text2);margin:0">Schema markup, speed optimization, analytics</p>
+        </div>
+        <label class="est-toggle">
+          <input type="checkbox" id="seo-toggle" onchange="updateEstimator()">
+          <div class="est-toggle-track"></div>
+          <div class="est-toggle-thumb"></div>
+        </label>
+      </div>
+      <!-- Result -->
+      <div class="est-price-box">
+        <p style="font-size:13px;color:rgba(255,255,255,.7);margin:0 0 6px;font-weight:500">Estimated Total</p>
+        <span class="est-total-num" id="est-total">Rs. 7,999</span>
+        <p style="font-size:12px;color:rgba(255,255,255,.6);margin:8px 0 0">*Approximate estimate. Final quote may vary.</p>
+        <a id="est-wa-btn" href="#" target="_blank" class="est-wa-btn">
+          <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Get Custom Quote on WhatsApp
+        </a>
+      </div>
+    </div>
+
     <div class="flex justify-center mb-10">
       <div class="inline-flex rounded-2xl p-1.5 gap-1" style="background:var(--surface2)">
         <button id="tab-website" onclick="switchPricingTab('website')" class="pricing-tab-btn active flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm">
@@ -1988,6 +2296,189 @@ function fallbackCopy(text, label) {
   } else {
     window.addEventListener('load', function () { setTimeout(initTopLeft, 80); });
   }
+})();
+
+/* ════════════════════════════════════════════════════
+   1. WA SMART NUDGE — 25s timer, 6s auto-fade
+   ════════════════════════════════════════════════════ */
+(function(){
+  var nudge      = document.getElementById('wa-nudge');
+  var closeBtn   = document.getElementById('nudge-close-btn');
+  var floatBtn   = document.getElementById('wa-float-btn');
+  if(!nudge || !floatBtn) return;
+
+  var shown = false;
+  var rafId = null;
+
+  function positionNudge(){
+    var r = floatBtn.getBoundingClientRect();
+    var nW = nudge.offsetWidth || 220;
+    var nH = nudge.offsetHeight || 70;
+    var left = r.left + r.width/2 - nW/2;
+    var top  = r.top  - nH - 12;
+    // Clamp to viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - nW - 8));
+    if(top < 60){ top = r.bottom + 12; }
+    nudge.style.left = left + 'px';
+    nudge.style.top  = top  + 'px';
+  }
+
+  function showNudge(){
+    if(shown) return;
+    shown = true;
+    nudge.style.display = 'block';
+    nudge.style.opacity = '0';
+    nudge.style.transform = 'translateY(10px) scale(.95)';
+    positionNudge();
+    // Animate in
+    requestAnimationFrame(function(){
+      nudge.style.transition = 'opacity .4s ease, transform .4s ease';
+      nudge.style.opacity = '1';
+      nudge.style.transform = 'translateY(0) scale(1)';
+    });
+    // Continuously follow button (in case of drag)
+    rafId = setInterval(positionNudge, 120);
+    // Auto fade after 6s
+    setTimeout(hideNudge, 6000);
+  }
+
+  function hideNudge(){
+    clearInterval(rafId);
+    nudge.style.opacity = '0';
+    nudge.style.transform = 'translateY(8px) scale(.95)';
+    setTimeout(function(){ nudge.style.display = 'none'; }, 420);
+  }
+
+  if(closeBtn){ closeBtn.addEventListener('click', function(e){ e.stopPropagation(); hideNudge(); }); }
+
+  // Trigger after 25 seconds
+  setTimeout(showNudge, 25000);
+  // Update position on resize
+  window.addEventListener('resize', positionNudge, {passive:true});
+})();
+
+/* ════════════════════════════════════════════════════
+   2. IMPACT STATS COUNTER — scroll-triggered
+   ════════════════════════════════════════════════════ */
+(function(){
+  var section = document.getElementById('stats-section');
+  if(!section) return;
+  var triggered = false;
+
+  function easeOut(t){ return 1 - Math.pow(1-t, 3); }
+
+  function animateCount(el, target, isDecimal, duration){
+    var start = performance.now();
+    function step(now){
+      var p  = Math.min((now - start) / duration, 1);
+      var val = easeOut(p) * target;
+      el.textContent = isDecimal ? val.toFixed(1) : Math.floor(val);
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = isDecimal ? target.toFixed(1) : target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function startCounters(){
+    if(triggered) return;
+    triggered = true;
+    var cards = section.querySelectorAll('[data-target]');
+    cards.forEach(function(card, i){
+      setTimeout(function(){
+        var target   = parseFloat(card.dataset.target);
+        var isDecimal = !!card.dataset.decimal;
+        var el = card.querySelector('.stat-count');
+        if(el) animateCount(el, target, isDecimal, 1800);
+      }, i * 120);
+    });
+  }
+
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) startCounters(); });
+  }, { threshold: 0.25 });
+  obs.observe(section);
+})();
+
+/* ════════════════════════════════════════════════════
+   3. LIVE GMB BADGE — city & time rotation
+   ════════════════════════════════════════════════════ */
+(function(){
+  var cityEl = document.getElementById('live-city');
+  var timeEl = document.getElementById('live-time');
+  if(!cityEl || !timeEl) return;
+
+  var cities = ['Pune','Mumbai','Nashik','Delhi','Bangalore','Nagpur','Thane','Hyderabad'];
+  var times  = ['2 hours','45 minutes','3 hours','1 hour','20 minutes','5 hours','30 minutes','4 hours'];
+  var idx    = 0;
+
+  setInterval(function(){
+    idx = (idx + 1) % cities.length;
+    cityEl.style.opacity = '0';
+    timeEl.style.opacity = '0';
+    setTimeout(function(){
+      cityEl.textContent = cities[idx];
+      timeEl.textContent = times[idx];
+      cityEl.style.transition = 'opacity .4s';
+      timeEl.style.transition = 'opacity .4s';
+      cityEl.style.opacity = '1';
+      timeEl.style.opacity = '1';
+    }, 300);
+  }, 5000);
+})();
+
+/* ════════════════════════════════════════════════════
+   4. PRICE ESTIMATOR — logic
+   ════════════════════════════════════════════════════ */
+function updateEstimator(){
+  var pages  = parseInt(document.getElementById('pages-slider').value, 10);
+  var gmb    = document.getElementById('gmb-toggle').checked;
+  var seo    = document.getElementById('seo-toggle').checked;
+
+  document.getElementById('pages-display').textContent = pages + ' Pages';
+
+  // Update slider gradient
+  var slider = document.getElementById('pages-slider');
+  var pct = ((pages - 4) / (12 - 4)) * 100;
+  slider.style.setProperty('--val', pct + '%');
+
+  // Pricing logic
+  var base = 0;
+  if(pages <= 4)  base = 7999;
+  else if(pages <= 8) base = 7999 + Math.round((pages - 4) * (20000 - 7999) / 4);
+  else base = 20000 + Math.round((pages - 8) * (50000 - 20000) / 4);
+
+  if(gmb) base += 5000;  // GMB basic monthly
+  if(seo) base += 3000;  // Advanced SEO add-on
+
+  var formatted = 'Rs. ' + base.toLocaleString('en-IN');
+  document.getElementById('est-total').textContent = formatted;
+
+  var msg = 'Hi! Mujhe ' + pages + ' page website' + (gmb ? ' + GMB management' : '') + (seo ? ' + SEO setup' : '') + ' chahiye. Estimated: ' + formatted + '. Custom quote bata do!';
+  var waLink = 'https://wa.me/917860703473?text=' + encodeURIComponent(msg);
+  var waBtn  = document.getElementById('est-wa-btn');
+  if(waBtn) waBtn.href = waLink;
+}
+// Run once on load
+document.addEventListener('DOMContentLoaded', function(){ updateEstimator(); });
+
+/* ════════════════════════════════════════════════════
+   5. HOW WE WORK TIMELINE — scroll fade-in
+   ════════════════════════════════════════════════════ */
+(function(){
+  var steps = document.querySelectorAll('.timeline-step');
+  if(!steps.length) return;
+
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var delay = parseInt(e.target.dataset.tl || 0, 10) * 130;
+        setTimeout(function(){ e.target.classList.add('tl-visible'); }, delay);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  steps.forEach(function(s){ obs.observe(s); });
 })();
 </script>
 </body>
