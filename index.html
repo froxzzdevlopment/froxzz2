@@ -458,6 +458,196 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
 .maps-embed-wrap iframe{display:block;width:100%;height:220px;border:none;filter:grayscale(15%) brightness(0.9)}
 .maps-embed-label{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 
+/* ══════════════════════════════════════
+   CONTACT SECTION UPGRADES
+   ══════════════════════════════════════ */
+
+/* — Gradient Glow Input Focus — */
+.contact-input{
+  background:var(--surface2)!important;
+  border:1.5px solid var(--border)!important;
+  transition:border-color .25s,background .25s,box-shadow .25s,transform .18s;
+}
+.contact-input:focus{
+  background:var(--surface)!important;
+  border-color:transparent!important;
+  box-shadow:0 0 0 2px #4f46e5,0 0 0 4px rgba(124,58,237,.22),0 0 24px rgba(79,70,229,.14)!important;
+  outline:none!important;
+  transform:translateY(-1px);
+}
+[data-theme="dark"] .contact-input:focus{
+  box-shadow:0 0 0 2px #6366f1,0 0 0 4px rgba(139,92,246,.3),0 0 28px rgba(99,102,241,.18)!important;
+}
+
+/* — Shake animation for form errors — */
+@keyframes contactShake{
+  0%,100%{transform:translateX(0)}
+  14%{transform:translateX(-8px)}
+  28%{transform:translateX(8px)}
+  42%{transform:translateX(-6px)}
+  57%{transform:translateX(6px)}
+  71%{transform:translateX(-3px)}
+  85%{transform:translateX(3px)}
+}
+.err-shake{animation:contactShake .45s cubic-bezier(.22,1,.36,1) forwards}
+.contact-err-msg{
+  display:none;font-size:11px;color:#ef4444;margin-top:5px;
+  font-weight:600;letter-spacing:.01em;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:6px;
+  background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);
+}
+.contact-err-msg.show{display:flex}
+
+/* — Shimmer on CTA buttons — */
+@keyframes btnShimmerPass{
+  0%{transform:translateX(-100%) skewX(-18deg)}
+  100%{transform:translateX(200%) skewX(-18deg)}
+}
+.shimmer-btn{position:relative;overflow:hidden}
+.shimmer-btn::after{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:45%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);
+  transform:translateX(-100%) skewX(-18deg);
+  pointer-events:none;
+}
+.shimmer-btn.run-shimmer::after{
+  animation:btnShimmerPass .7s ease forwards;
+}
+
+/* — Custom Service Dropdown — */
+.svc-dd-wrap{position:relative;width:100%}
+.svc-dd-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:12px 16px;border-radius:12px;
+  border:1.5px solid var(--border);
+  background:var(--surface2);color:var(--text);
+  font-size:13.5px;font-family:'DM Sans',sans-serif;font-weight:500;
+  cursor:pointer;user-select:none;
+  transition:border-color .22s,background .22s,box-shadow .22s,transform .18s;
+  outline:none;-webkit-tap-highlight-color:transparent;
+  text-align:left;
+}
+.svc-dd-btn:hover{border-color:#818cf8;background:var(--surface)}
+.svc-dd-wrap.svc-open .svc-dd-btn{
+  background:var(--surface);border-color:transparent;
+  box-shadow:0 0 0 2px #4f46e5,0 0 0 4px rgba(124,58,237,.22),0 0 24px rgba(79,70,229,.12);
+  transform:translateY(-1px);
+}
+.svc-dd-trigger-inner{display:flex;align-items:center;gap:9px;flex:1;min-width:0;overflow:hidden}
+.svc-dd-trigger-icon{font-size:17px;flex-shrink:0;line-height:1}
+.svc-dd-trigger-text{
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:13px;color:var(--text);font-weight:500;
+}
+.svc-dd-chevron{
+  width:16px;height:16px;flex-shrink:0;stroke:var(--text3);fill:none;
+  stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .28s cubic-bezier(.22,1,.36,1),stroke .2s;
+}
+.svc-dd-wrap.svc-open .svc-dd-chevron{transform:rotate(180deg);stroke:#4f46e5}
+.svc-dd-menu{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:16px;padding:6px;
+  box-shadow:0 20px 60px rgba(0,0,0,.15),0 4px 16px rgba(0,0,0,.08);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  opacity:0;pointer-events:none;
+  transform:translateY(-10px) scale(.97);
+  transform-origin:top center;
+  transition:opacity .22s cubic-bezier(.22,1,.36,1),transform .22s cubic-bezier(.22,1,.36,1);
+  z-index:9998;
+}
+.svc-dd-wrap.svc-open .svc-dd-menu{
+  opacity:1;pointer-events:all;transform:translateY(0) scale(1);
+}
+.svc-dd-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 12px;border-radius:10px;
+  font-size:13px;font-weight:500;color:var(--text2);
+  cursor:pointer;transition:background .15s,color .15s;
+  font-family:'DM Sans',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+.svc-dd-item:hover{background:var(--ind-light);color:#4f46e5}
+.svc-dd-item.svc-active{background:var(--ind-light);color:#4f46e5;font-weight:600}
+.svc-item-icon{font-size:16px;flex-shrink:0;line-height:1;width:22px;text-align:center}
+.svc-item-meta{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.svc-item-name{font-weight:600;font-size:13px;color:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.svc-item-price{font-size:11px;color:var(--text3);font-weight:400}
+.svc-dd-item.svc-active .svc-item-price{color:rgba(79,70,229,.65)}
+.svc-dd-divider{height:1px;background:var(--border);margin:4px 8px}
+.svc-dd-group-label{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text3);padding:6px 14px 3px;
+}
+
+/* — Trust Badge & Response-time badge — */
+.contact-resp-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(79,70,229,.06));
+  border:1px solid rgba(16,185,129,.22);
+  border-radius:50px;padding:7px 16px;font-size:12px;font-weight:700;
+  color:#059669;margin-bottom:20px;letter-spacing:.01em;
+}
+[data-theme="dark"] .contact-resp-badge{
+  background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(99,102,241,.1));
+  border-color:rgba(52,211,153,.25);color:#34d399;
+}
+.contact-resp-dot{
+  width:8px;height:8px;border-radius:50%;background:#10b981;
+  flex-shrink:0;animation:live-pulse 1.6s ease-in-out infinite;
+}
+.contact-trust-bar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  padding:10px 14px;border-radius:12px;margin-top:14px;
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:12px;color:var(--text3);font-weight:500;
+}
+.contact-trust-bar span{display:inline-flex;align-items:center;gap:4px}
+.contact-trust-sep{color:var(--border);font-size:14px}
+
+/* — Form card premium — */
+.contact-form-card{
+  position:relative;overflow:hidden;
+  border-radius:28px;padding:32px;
+  background:var(--surface);border:1px solid var(--border);
+  box-shadow:0 8px 40px rgba(79,70,229,.08),0 2px 12px rgba(0,0,0,.05);
+  transition:box-shadow .3s;
+}
+[data-theme="dark"] .contact-form-card{
+  box-shadow:0 8px 40px rgba(79,70,229,.14),0 2px 16px rgba(0,0,0,.25);
+}
+.contact-form-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,70,229,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.contact-form-card::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* — Left panel enhancements — */
+.contact-info-card{
+  padding:24px;border-radius:20px;
+  background:var(--surface2);border:1px solid var(--border);
+  transition:border-color .2s,box-shadow .2s;
+}
+.contact-info-card:hover{
+  border-color:#c7d2fe;
+  box-shadow:0 4px 20px rgba(79,70,229,.09);
+}
+[data-theme="dark"] .contact-info-card:hover{border-color:rgba(99,102,241,.3)}
+
+@media (max-width:768px){
+  .contact-form-card{padding:22px 18px}
+  .svc-dd-menu{border-radius:14px}
+}
+
 @media (max-width:768px){
   .page-section{animation-duration:.28s;width:100%;max-width:100vw}
   .site-preview-wrap{height:185px}
@@ -1347,49 +1537,225 @@ input::placeholder,textarea::placeholder{color:var(--text3)!important}
 <!-- CONTACT -->
 <div id="contact" class="page-section hidden pb-24 pt-10" style="background:var(--bg)">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-16">
-      <div>
-        <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color:var(--text)">Let's Build Something<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">Great Together</span></h2>
-        <p class="text-lg mb-10" style="color:var(--text2)" data-i18n="contact_sub">Ready to take your business to the next level? Get in touch for a free consultation.</p>
-        <div class="space-y-7">
-          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style="background:var(--ind-light)"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#4f46e5" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 11.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.1 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4 class="text-base font-semibold mb-1" style="color:var(--text)">Call / WhatsApp</h4><span onclick="copyContact('+917860703473','Phone')" class="copyable-contact text-lg" style="color:var(--text2)" title="Click to copy">+91 7860703473<svg class="copy-hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div></div>
-          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style="background:var(--ind-light)"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#4f46e5" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h4 class="text-base font-semibold mb-1" style="color:var(--text)">Email</h4><span onclick="copyContact('froxzzdevlopment@gmail.com','Email')" class="copyable-contact text-lg" style="color:var(--text2)" title="Click to copy">froxzzdevlopment@gmail.com<svg class="copy-hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div></div>
-          <a href="https://wa.me/917860703473?text=Hi%20Froxzz%20Development!%20I%20need%20help%20with%20my%20digital%20presence." target="_blank" class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3.5 rounded-full font-semibold transition-all shadow-lg">
-            <svg class="w-5 h-5" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Chat on WhatsApp
-          </a>
+
+    <!-- Section heading -->
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <div class="contact-resp-badge mx-auto w-fit">
+        <span class="contact-resp-dot"></span>
+        ⚡ Typical Response Time: &lt; 15 mins
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color:var(--text)">Let's Build Something<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">Great Together</span></h1>
+      <p class="text-lg" style="color:var(--text2)" data-i18n="contact_sub">Ready to take your business to the next level? Get in touch for a free consultation.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+
+      <!-- ── LEFT PANEL ── -->
+      <div class="space-y-6">
+
+        <!-- Info cards -->
+        <div class="contact-info-card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style="background:var(--ind-light)">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#4f46e5" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 11.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.1 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold uppercase tracking-wider mb-1.5" style="color:var(--text3)">Call / WhatsApp</h4>
+            <span onclick="copyContact('+917860703473','Phone')" class="copyable-contact text-lg font-semibold" style="color:var(--text)" title="Click to copy">+91 7860703473
+              <svg class="copy-hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="contact-info-card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style="background:var(--ind-light)">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#4f46e5" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold uppercase tracking-wider mb-1.5" style="color:var(--text3)">Email</h4>
+            <span onclick="copyContact('froxzzdevlopment@gmail.com','Email')" class="copyable-contact text-base font-semibold" style="color:var(--text)" title="Click to copy">froxzzdevlopment@gmail.com
+              <svg class="copy-hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/917860703473?text=Hi%20Froxzz%20Development!%20I%20need%20help%20with%20my%20digital%20presence." target="_blank" class="shimmer-btn inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-4 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-200/40 w-full justify-center" id="contact-wa-hero-btn">
+          <svg class="w-5 h-5 shrink-0" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp — Free Consult
+        </a>
+
+        <!-- Trust & Social Proof -->
+        <div class="contact-trust-bar">
+          <span>🌟 5.0 Rating (12 Reviews)</span>
+          <span class="contact-trust-sep">·</span>
+          <span>🇮🇳 Serving Pune &amp; Pimpri-Chinchwad with Pride</span>
+          <span class="contact-trust-sep">·</span>
+          <span>🏆 50+ Projects Delivered</span>
+        </div>
+
+        <!-- Agency commitment blurb -->
+        <div class="rounded-2xl p-5 relative overflow-hidden" style="background:linear-gradient(135deg,var(--ind-light),var(--vio-light));border:1px solid var(--card1-border)">
+          <p class="text-sm font-semibold mb-1" style="color:var(--text)">🎯 Our Commitment to You</p>
+          <p class="text-sm leading-relaxed" style="color:var(--text2)">Every project gets my personal attention. No outsourcing, no delays — just clean, fast, results-driven work delivered with pride from Maharashtra 🇮🇳</p>
         </div>
       </div>
-      <div class="p-8 rounded-3xl border shadow-sm" style="background:var(--surface);border-color:var(--border)">
-        <div id="success-message" class="hidden flex-col items-center justify-center text-center py-10">
-          <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-5"><svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <h3 class="text-2xl font-bold mb-2" style="color:var(--text)" data-i18n="contact_success_title">Message Bhej Diya! 🎉</h3>
-          <p class="mb-6" style="color:var(--text2)" data-i18n="contact_success_sub">WhatsApp window khuli hogi — message send kar do!</p>
-          <button onclick="resetForm()" class="inline-flex items-center gap-2 text-indigo-600 font-semibold px-5 py-2.5 rounded-full text-sm" style="background:var(--ind-light)" data-i18n="contact_success_btn">Dobara bhejo</button>
-        </div>
-        <form id="contact-form" class="space-y-4" onsubmit="handleFormSubmit(event)" novalidate>
-          <h3 class="text-xl font-bold mb-1" style="color:var(--text)" data-i18n="contact_form_title">Send Us a Message</h3>
-          <p class="text-xs mb-2" style="color:var(--text3)" data-i18n="contact_form_sub">Form bharo — directly WhatsApp par message jayega 🚀</p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div><label class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--text2)" data-i18n="contact_label_name">Full Name *</label><input type="text" id="name" class="w-full px-4 py-3 rounded-xl border outline-none text-sm" placeholder="Your name" data-i18n-placeholder="contact_ph_name"><p id="name-err" class="hidden text-red-500 text-xs mt-1">⚠ Name is required</p></div>
-            <div><label class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--text2)" data-i18n="contact_label_phone">Phone Number *</label><input type="tel" id="phone" class="w-full px-4 py-3 rounded-xl border outline-none text-sm" placeholder="+91 98765 43210"><p id="phone-err" class="hidden text-red-500 text-xs mt-1">⚠ Phone is required</p></div>
+
+      <!-- ── RIGHT PANEL — FORM CARD ── -->
+      <div class="contact-form-card">
+
+        <!-- Success state -->
+        <div id="success-message" class="hidden flex-col items-center justify-center text-center py-12">
+          <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-5 mx-auto" style="box-shadow:0 0 0 8px rgba(16,185,129,.1)">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
-          <div><label class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--text2)">Email <span style="color:var(--text3);font-weight:400;text-transform:none">(optional)</span></label><input type="email" id="email" class="w-full px-4 py-3 rounded-xl border outline-none text-sm" placeholder="you@example.com"></div>
-          <div><label class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--text2)">Service</label><select id="service" class="w-full px-4 py-3 rounded-xl border outline-none text-sm appearance-none cursor-pointer"><option>🌐 4-Page Website — Rs. 7,999</option><option>🚀 8-Page Website Pro — Rs. 20,000</option><option>⚡ Business From Scratch — Rs. 50,000</option><option>📍 GMB Local Essentials — Rs. 5,000/mo</option><option>🔥 GMB Local Growth — Rs. 10,000/mo</option><option>🏆 GMB Market Dominance — Rs. 25,000/mo</option><option>🔥 Website + GMB Combo</option><option>💬 Other / Custom</option></select></div>
-          <div><label class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--text2)" data-i18n="contact_label_msg">Message *</label><textarea id="message" rows="4" class="w-full px-4 py-3 rounded-xl border outline-none resize-none text-sm" placeholder="Describe your project..." data-i18n-placeholder="contact_ph_msg"></textarea><p id="msg-err" class="hidden text-red-500 text-xs mt-1">⚠ Message is required</p></div>
+          <h3 class="text-2xl font-bold mb-2" style="color:var(--text)" data-i18n="contact_success_title">Message Bhej Diya! 🎉</h3>
+          <p class="mb-6 text-sm" style="color:var(--text2)" data-i18n="contact_success_sub">WhatsApp window khuli hogi — message send kar do!</p>
+          <button onclick="resetForm()" class="inline-flex items-center gap-2 text-indigo-600 font-semibold px-6 py-2.5 rounded-full text-sm transition-all hover:-translate-y-0.5 transform" style="background:var(--ind-light)" data-i18n="contact_success_btn">← Dobara bhejo</button>
+        </div>
+
+        <form id="contact-form" class="space-y-4" onsubmit="handleFormSubmit(event)" novalidate>
+
+          <!-- Form header -->
+          <div class="mb-2">
+            <h3 class="text-xl font-bold" style="color:var(--text)" data-i18n="contact_form_title">Send Us a Message</h3>
+            <p class="text-xs mt-1" style="color:var(--text3)" data-i18n="contact_form_sub">Form bharo — directly WhatsApp par message jayega 🚀</p>
+          </div>
+
+          <!-- Name + Phone -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold mb-1.5 uppercase tracking-wider" style="color:var(--text2)" data-i18n="contact_label_name">Full Name *</label>
+              <input type="text" id="name" class="contact-input w-full px-4 py-3 rounded-xl outline-none text-sm" placeholder="Your name" data-i18n-placeholder="contact_ph_name">
+              <p id="name-err" class="contact-err-msg">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Name is required
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1.5 uppercase tracking-wider" style="color:var(--text2)" data-i18n="contact_label_phone">Phone Number *</label>
+              <input type="tel" id="phone" class="contact-input w-full px-4 py-3 rounded-xl outline-none text-sm" placeholder="+91 98765 43210">
+              <p id="phone-err" class="contact-err-msg">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Phone is required
+              </p>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-xs font-bold mb-1.5 uppercase tracking-wider" style="color:var(--text2)">Email <span style="color:var(--text3);font-weight:400;text-transform:none">(optional)</span></label>
+            <input type="email" id="email" class="contact-input w-full px-4 py-3 rounded-xl outline-none text-sm" placeholder="you@example.com">
+          </div>
+
+          <!-- ── CUSTOM SERVICE DROPDOWN ── -->
+          <div>
+            <label class="block text-xs font-bold mb-1.5 uppercase tracking-wider" style="color:var(--text2)">Service Interested In</label>
+            <!-- Hidden input carries the value for form submission logic -->
+            <input type="hidden" id="service" value="🌐 4-Page Website — Rs. 7,999">
+            <div class="svc-dd-wrap" id="svc-dd-wrap">
+              <button type="button" class="svc-dd-btn" id="svc-dd-btn" onclick="toggleSvcDD()" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Service">
+                <span class="svc-dd-trigger-inner">
+                  <span class="svc-dd-trigger-icon" id="svc-dd-icon">🌐</span>
+                  <span class="svc-dd-trigger-text" id="svc-dd-text">4-Page Website — Rs. 7,999</span>
+                </span>
+                <svg class="svc-dd-chevron" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <ul class="svc-dd-menu" role="listbox" id="svc-dd-menu" aria-label="Services">
+                <li class="svc-dd-group-label">— Website Plans —</li>
+                <li class="svc-dd-item svc-active" role="option" aria-selected="true" onclick="selectSvc(this,'🌐','4-Page Website — Rs. 7,999','🌐 4-Page Website — Rs. 7,999')">
+                  <span class="svc-item-icon">🌐</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">4-Page Website</span>
+                    <span class="svc-item-price">Rs. 7,999 · one-time · Perfect starter</span>
+                  </span>
+                </li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'🚀','8-Page Website Pro — Rs. 20,000','🚀 8-Page Website Pro — Rs. 20,000')">
+                  <span class="svc-item-icon">🚀</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">8-Page Website Pro</span>
+                    <span class="svc-item-price">Rs. 20,000 · one-time · Growing businesses</span>
+                  </span>
+                </li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'⚡','Business From Scratch — Rs. 50,000','⚡ Business From Scratch — Rs. 50,000')">
+                  <span class="svc-item-icon">⚡</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">Business From Scratch</span>
+                    <span class="svc-item-price">Rs. 50,000 · Complete launch package</span>
+                  </span>
+                </li>
+                <div class="svc-dd-divider"></div>
+                <li class="svc-dd-group-label">— GMB / SEO Plans —</li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'📍','GMB Local Essentials — Rs. 5,000/mo','📍 GMB Local Essentials — Rs. 5,000/mo')">
+                  <span class="svc-item-icon">📍</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">GMB Local Essentials</span>
+                    <span class="svc-item-price">Rs. 5,000/mo · Profile setup + basic SEO</span>
+                  </span>
+                </li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'🔥','GMB Local Growth — Rs. 10,000/mo','🔥 GMB Local Growth — Rs. 10,000/mo')">
+                  <span class="svc-item-icon">🔥</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">GMB Local Growth</span>
+                    <span class="svc-item-price">Rs. 10,000/mo · Posts + reviews + ranking</span>
+                  </span>
+                </li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'🏆','GMB Market Dominance — Rs. 25,000/mo','🏆 GMB Market Dominance — Rs. 25,000/mo')">
+                  <span class="svc-item-icon">🏆</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">GMB Market Dominance</span>
+                    <span class="svc-item-price">Rs. 25,000/mo · Citations + geo-tagging</span>
+                  </span>
+                </li>
+                <div class="svc-dd-divider"></div>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'🔥','Website + GMB Combo','🔥 Website + GMB Combo')">
+                  <span class="svc-item-icon">🔥</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">Website + GMB Combo</span>
+                    <span class="svc-item-price">Best value bundle · Custom quote</span>
+                  </span>
+                </li>
+                <li class="svc-dd-item" role="option" aria-selected="false" onclick="selectSvc(this,'💬','Other / Custom','💬 Other / Custom')">
+                  <span class="svc-item-icon">💬</span>
+                  <span class="svc-item-meta">
+                    <span class="svc-item-name">Other / Custom</span>
+                    <span class="svc-item-price">Tell us what you need</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label class="block text-xs font-bold mb-1.5 uppercase tracking-wider" style="color:var(--text2)" data-i18n="contact_label_msg">Message *</label>
+            <textarea id="message" rows="4" class="contact-input w-full px-4 py-3 rounded-xl outline-none resize-none text-sm" placeholder="Describe your project..." data-i18n-placeholder="contact_ph_msg"></textarea>
+            <p id="msg-err" class="contact-err-msg">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Message is required
+            </p>
+          </div>
+
+          <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-3 pt-1">
-            <button type="submit" class="flex-1 bg-indigo-600 text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md flex items-center justify-center gap-2 text-sm">
+            <button type="submit" id="form-wa-btn" class="shimmer-btn flex-1 bg-indigo-600 text-white px-6 py-3.5 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200/40 flex items-center justify-center gap-2 text-sm">
               <svg class="w-4 h-4 shrink-0" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Send via WhatsApp
             </button>
-            <button type="button" onclick="sendEmail()" class="flex-1 px-6 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 text-sm border" style="background:var(--surface2);border-color:var(--border);color:var(--text)">
+            <button type="button" id="form-email-btn" onclick="sendEmail()" class="shimmer-btn flex-1 px-6 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm border transition-all hover:-translate-y-0.5 transform" style="background:var(--surface2);border-color:var(--border);color:var(--text)">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               Send via Email
             </button>
           </div>
-          <p class="text-xs text-center pt-1" style="color:var(--text3)" data-i18n="contact_privacy">🔒 Your details are safe — no spam ever.</p>
+
+          <!-- Bottom trust line -->
+          <div class="flex flex-col items-center gap-1 pt-1">
+            <p class="text-xs text-center font-semibold" style="color:var(--text3)">
+              🔒 Data Encrypted &amp; Confidential &nbsp;·&nbsp; <span data-i18n="contact_privacy">No spam ever.</span>
+            </p>
+          </div>
+
         </form>
-      </div>
+      </div><!-- end form card -->
     </div>
   </div>
 </div>
@@ -1893,8 +2259,18 @@ function toggleFAQ(btn) {
 function validateField(id, errId) {
   var val = document.getElementById(id).value.trim();
   var err = document.getElementById(errId);
-  if (!val) { err.classList.remove('hidden'); return false; }
-  err.classList.add('hidden'); return true;
+  var field = document.getElementById(id);
+  if (!val) {
+    err.classList.add('show');
+    var wrap = field.parentNode;
+    wrap.classList.remove('err-shake');
+    void wrap.offsetWidth;
+    wrap.classList.add('err-shake');
+    setTimeout(function(){ wrap.classList.remove('err-shake'); }, 500);
+    return false;
+  }
+  err.classList.remove('show');
+  return true;
 }
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -1923,7 +2299,12 @@ function resetForm() {
   document.getElementById('success-message').classList.remove('flex');
   document.getElementById('contact-form').classList.remove('hidden');
   document.getElementById('contact-form').reset();
-  ['name-err','phone-err','msg-err'].forEach(function(id){document.getElementById(id).classList.add('hidden');});
+  // Reset custom service dropdown to first option
+  selectSvc(document.querySelector('.svc-dd-item'), '🌐', '4-Page Website — Rs. 7,999', '🌐 4-Page Website — Rs. 7,999');
+  ['name-err','phone-err','msg-err'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.classList.remove('show');
+  });
 }
 
 // ════════════════════════════════════════════════════
@@ -2397,6 +2778,79 @@ document.addEventListener('DOMContentLoaded', function(){ updateEstimator(); });
 
   steps.forEach(function(s){ obs.observe(s); });
 })();
+
+/* ════════════════════════════════════════════════════
+   CONTACT SECTION — CUSTOM SERVICE DROPDOWN
+   ════════════════════════════════════════════════════ */
+function toggleSvcDD() {
+  var wrap = document.getElementById('svc-dd-wrap');
+  var btn  = document.getElementById('svc-dd-btn');
+  var isOpen = wrap.classList.contains('svc-open');
+  wrap.classList.toggle('svc-open', !isOpen);
+  btn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+}
+
+function selectSvc(item, icon, label, value) {
+  // Update hidden input
+  var hiddenInput = document.getElementById('service');
+  if (hiddenInput) hiddenInput.value = value;
+  // Update trigger display
+  var iconEl = document.getElementById('svc-dd-icon');
+  var textEl = document.getElementById('svc-dd-text');
+  if (iconEl) iconEl.textContent = icon;
+  if (textEl) textEl.textContent = label;
+  // Update active state on items
+  var allItems = document.querySelectorAll('.svc-dd-item');
+  allItems.forEach(function(el) {
+    el.classList.remove('svc-active');
+    el.setAttribute('aria-selected', 'false');
+  });
+  if (item) {
+    item.classList.add('svc-active');
+    item.setAttribute('aria-selected', 'true');
+  }
+  // Close dropdown
+  var wrap = document.getElementById('svc-dd-wrap');
+  var btn  = document.getElementById('svc-dd-btn');
+  if (wrap) wrap.classList.remove('svc-open');
+  if (btn)  btn.setAttribute('aria-expanded', 'false');
+}
+
+// Close service dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('svc-dd-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    wrap.classList.remove('svc-open');
+    var btn = document.getElementById('svc-dd-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* ════════════════════════════════════════════════════
+   CONTACT SECTION — BUTTON SHIMMER SCHEDULER
+   Fires every 5.5s on alternating CTA buttons
+   ════════════════════════════════════════════════════ */
+(function() {
+  var shimmerTargets = ['form-wa-btn', 'form-email-btn', 'contact-wa-hero-btn'];
+  var idx = 0;
+  function fireShimmer() {
+    var id  = shimmerTargets[idx % shimmerTargets.length];
+    var btn = document.getElementById(id);
+    if (btn) {
+      btn.classList.remove('run-shimmer');
+      void btn.offsetWidth; // reflow
+      btn.classList.add('run-shimmer');
+      setTimeout(function(){ btn.classList.remove('run-shimmer'); }, 750);
+    }
+    idx++;
+  }
+  // Start after 3s, then every 5.5s
+  setTimeout(function() {
+    fireShimmer();
+    setInterval(fireShimmer, 5500);
+  }, 3000);
+})();
+
 </script>
 </body>
 </html>
