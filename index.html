@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Froxzz Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; }
+        h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; }
+
+        html { scroll-behavior: smooth; }
+
+        /* Page transition */
+        .page-section {
+            min-height: calc(100vh - 300px);
+            animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .page-section.slide-left {
+            animation: slideLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .page-section.slide-right {
+            animation: slideRight 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Nav */
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4f46e5;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: #4f46e5 !important; }
+
+        /* Logo hover effect */
+        .logo-img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .logo-img:hover {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: 0 0 0 3px #a5b4fc;
+        }
+
+        /* Card hover */
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px -12px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Pricing card */
+        .pricing-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 32px 64px -16px rgba(79, 70, 229, 0.2);
+        }
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f59e0b;
+            color: #1c1917;
+            font-size: 10px;
+            font-weight: 800;
+            font-family: 'Syne', sans-serif;
+            letter-spacing: 0.1em;
+            padding: 4px 14px;
+            border-radius: 999px;
+        }
+
+        /* Feature list */
+        .feature-yes { color: #10b981; }
+        .feature-no  { color: #ef4444; opacity: 0.6; }
+
+        /* Footer */
+        .footer-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        }
+        .footer-link {
+            position: relative;
+            display: inline-block;
+        }
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #818cf8;
+            transition: width 0.3s ease;
+        }
+        .footer-link:hover::after { width: 100%; }
+
+        .social-btn { transition: transform 0.2s ease, background 0.2s ease; }
+        .social-btn:hover { transform: translateY(-3px); }
+
+        /* WhatsApp float */
+        .wa-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 100;
+            background: #25d366;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37,211,102,0.45);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .wa-float:hover {
+            transform: scale(1.12);
+            box-shadow: 0 12px 32px rgba(37,211,102,0.55);
+        }
+
+        /* Staggered fade for features */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: staggerFade 0.5s ease forwards;
+        }
+        @keyframes staggerFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pulse badge */
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .pulse-ring {
+            animation: pulse-ring 1.4s ease-out infinite;
+        }
+
+        /* Mobile menu slide */
+        #mobile-menu {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen selection:bg-indigo-500 selection:text-white">
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/917860703473?text=Hi%20Froxzz%20Development!%20I%20need%20help%20with%20my%20digital%20presence." target="_blank" class="wa-float" title="Chat on WhatsApp">
+        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/85 backdrop-blur-md shadow-sm py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <a href="#home" onclick="showPage('home', event)" class="flex items-center gap-3 group">
+                    <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="logo-img rounded-full w-11 h-11 object-cover border-2 border-indigo-100" alt="Froxzz Logo">
+                    <span class="text-xl font-bold tracking-tight text-slate-900 font-syne" style="font-family:'Syne',sans-serif;">Froxzz Development</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-7">
+                    <a href="#home"     onclick="showPage('home', event)"     class="nav-link text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Home</a>
+                    <a href="#about"    onclick="showPage('about', event)"    class="nav-link text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">About Us</a>
+                    <a href="#services" onclick="showPage('services', event)" class="nav-link text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Services</a>
+                    <a href="#pricing"  onclick="showPage('pricing', event)"  class="nav-link text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Pricing</a>
+                    <a href="#contact"  onclick="showPage('contact', event)"  class="nav-link text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Contact</a>
+                    <a href="#contact"  onclick="showPage('contact', event)"  class="bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 transform">Get Started</a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-indigo-600 transition-colors" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-slate-100 px-4 flex flex-col gap-1">
+            <a href="#home"     onclick="showPage('home', event); toggleMobileMenu()"     class="px-4 py-3 text-base font-medium rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">Home</a>
+            <a href="#about"    onclick="showPage('about', event); toggleMobileMenu()"    class="px-4 py-3 text-base font-medium rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">About Us</a>
+            <a href="#services" onclick="showPage('services', event); toggleMobileMenu()" class="px-4 py-3 text-base font-medium rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">Services</a>
+            <a href="#pricing"  onclick="showPage('pricing', event); toggleMobileMenu()"  class="px-4 py-3 text-base font-medium rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">Pricing</a>
+            <a href="#contact"  onclick="showPage('contact', event); toggleMobileMenu()"  class="px-4 py-3 mb-2 text-base font-medium rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-20">
+
+        <!-- ===== HOME PAGE ===== -->
+        <div id="home" class="page-section">
+            <!-- Hero -->
+            <section class="pt-12 pb-20 lg:pt-24 lg:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-medium mb-6">
+                            <span class="relative flex h-2 w-2">
+                                <span class="pulse-ring absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                            </span>
+                            Serving All Over India
+                        </div>
+                        <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1] mb-6">
+                            Elevate Your<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">Digital Presence</span>
+                        </h1>
+                        <p class="text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
+                            Froxzz Development crafts stunning websites and optimizes Google My Business profiles — helping you dominate local search and attract more customers.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="#contact" onclick="showPage('contact', event)" class="bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 hover:-translate-y-0.5 transform flex items-center justify-center gap-2 group">
+                                Start Your Project
+                                <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <a href="#pricing" onclick="showPage('pricing', event)" class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-full font-semibold hover:bg-slate-50 hover:border-indigo-300 transition-all flex items-center justify-center gap-2">
+                                View Pricing
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-100 to-violet-50 rounded-3xl transform rotate-3 scale-105 -z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" alt="Web Development" class="rounded-3xl shadow-2xl border border-white/20 w-full hover:scale-[1.02] transition-transform duration-500" />
+                        <div class="absolute -bottom-5 -left-5 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
+                            <div class="bg-emerald-100 p-2.5 rounded-xl text-emerald-600">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Google Rankings</p>
+                                <p class="text-base font-bold text-slate-900">Rank Higher 🚀</p>
+                            </div>
+                        </div>
+                        <!-- Logo badge top right -->
+                        <div class="absolute -top-4 -right-4 bg-white p-2 rounded-2xl shadow-lg border border-indigo-100">
+                            <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="w-10 h-10 rounded-xl object-cover" alt="Froxzz">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Core Expertise -->
+            <section class="py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-14">
+                        <p class="text-indigo-600 font-semibold tracking-widest uppercase text-xs mb-3">What We Do</p>
+                        <h3 class="text-3xl md:text-4xl font-bold text-slate-900">Our Core Expertise</h3>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="hover-card bg-gradient-to-br from-indigo-50 to-slate-50 p-8 rounded-3xl border border-indigo-100 cursor-pointer" onclick="showPage('services', event)">
+                            <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                                <i data-lucide="code" class="text-white w-7 h-7"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-3">Website Creation</h4>
+                            <p class="text-slate-600 mb-5">Fast, responsive, and beautiful websites tailored to your business needs — from landing pages to full corporate sites.</p>
+                            <span class="text-indigo-600 font-semibold text-sm flex items-center gap-1 group">Learn more <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></span>
+                        </div>
+                        <div class="hover-card bg-gradient-to-br from-violet-50 to-slate-50 p-8 rounded-3xl border border-violet-100 cursor-pointer" onclick="showPage('services', event)">
+                            <div class="w-14 h-14 bg-violet-600 rounded-2xl flex items-center justify-center mb-6">
+                                <i data-lucide="search" class="text-white w-7 h-7"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-3">GMB Creation & SEO</h4>
+                            <p class="text-slate-600 mb-5">Optimize your Google My Business profile to rank high in local search — be the first choice for customers in your area.</p>
+                            <span class="text-violet-600 font-semibold text-sm flex items-center gap-1 group">Learn more <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us -->
+            <section class="py-24 bg-slate-900 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <p class="text-indigo-400 font-semibold tracking-widest uppercase text-xs mb-3">Why Us</p>
+                    <h3 class="text-3xl md:text-4xl font-bold mb-12">Why Choose Froxzz Development?</h3>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="hover-card bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                            <div class="w-12 h-12 bg-yellow-400/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="star" class="text-yellow-400 w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Expert Team</h4>
+                            <p class="text-slate-400">Highly skilled developers and SEO experts dedicated to your success.</p>
+                        </div>
+                        <div class="hover-card bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                            <div class="w-12 h-12 bg-emerald-400/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="trending-up" class="text-emerald-400 w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Result Oriented</h4>
+                            <p class="text-slate-400">We focus on metrics that matter: traffic, leads, and real business growth.</p>
+                        </div>
+                        <div class="hover-card bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                            <div class="w-12 h-12 bg-indigo-400/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="map-pin" class="text-indigo-400 w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Pan-India Reach</h4>
+                            <p class="text-slate-400">No matter where you are in India, we deliver top-notch digital solutions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Banner -->
+            <section class="py-20 px-4">
+                <div class="max-w-4xl mx-auto bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl p-10 md:p-14 text-white text-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-32 translate-x-32"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+                    <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="w-14 h-14 rounded-2xl mx-auto mb-5 border-2 border-white/30 object-cover" alt="Froxzz">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 relative z-10">Ready to Grow Your Business Online?</h2>
+                    <p class="text-indigo-100 text-lg mb-8 relative z-10">Get a free consultation. No obligations, just good advice.</p>
+                    <a href="#contact" onclick="showPage('contact', event)" class="inline-flex items-center gap-2 bg-white text-indigo-700 font-bold px-8 py-4 rounded-full hover:bg-indigo-50 transition-all shadow-xl hover:-translate-y-0.5 transform relative z-10">
+                        Get Free Consultation
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== ABOUT PAGE ===== -->
+        <div id="about" class="page-section hidden pb-24 pt-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="flex justify-center mb-5">
+                        <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="w-16 h-16 rounded-2xl object-cover shadow-lg border-2 border-indigo-100" alt="Froxzz Logo">
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">About Froxzz Development</h1>
+                    <p class="text-lg text-slate-600">We are a passionate team of digital creators and strategists, helping businesses across India establish a dominant online presence.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
+                    <div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" alt="Team working" class="rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300" />
+                            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" alt="Analytics" class="rounded-2xl shadow-lg mt-8 hover:scale-105 transition-transform duration-300" />
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-6">Your Partner in Digital Growth</h2>
+                        <p class="text-slate-600 text-lg mb-6 leading-relaxed">At Froxzz Development, we believe that every business deserves a powerful online presence. We are a dedicated team of web developers and SEO specialists committed to helping businesses thrive in the digital landscape.</p>
+                        <p class="text-slate-600 text-lg mb-8 leading-relaxed">Whether you need a brand new website or want to dominate local search with a fully optimized Google My Business profile, we have the expertise to deliver results across all of India.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 stagger-item" style="animation-delay:0.1s">
+                                <i data-lucide="check-circle-2" class="text-emerald-500 w-5 h-5 shrink-0"></i>
+                                <span class="text-slate-700 font-medium">Custom Website Development</span>
+                            </div>
+                            <div class="flex items-center gap-3 stagger-item" style="animation-delay:0.2s">
+                                <i data-lucide="check-circle-2" class="text-emerald-500 w-5 h-5 shrink-0"></i>
+                                <span class="text-slate-700 font-medium">Google My Business Optimization</span>
+                            </div>
+                            <div class="flex items-center gap-3 stagger-item" style="animation-delay:0.3s">
+                                <i data-lucide="check-circle-2" class="text-emerald-500 w-5 h-5 shrink-0"></i>
+                                <span class="text-slate-700 font-medium">Local SEO Strategies</span>
+                            </div>
+                            <div class="flex items-center gap-3 stagger-item" style="animation-delay:0.4s">
+                                <i data-lucide="check-circle-2" class="text-emerald-500 w-5 h-5 shrink-0"></i>
+                                <span class="text-slate-700 font-medium">Pan-India Service Coverage</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="hover-card bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center">
+                        <i data-lucide="target" class="w-12 h-12 text-indigo-600 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3">Our Mission</h3>
+                        <p class="text-slate-600">To empower businesses of all sizes with cutting-edge digital tools and strategies that drive real growth.</p>
+                    </div>
+                    <div class="hover-card bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center">
+                        <i data-lucide="users" class="w-12 h-12 text-indigo-600 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3">Our Team</h3>
+                        <p class="text-slate-600">A diverse group of creative thinkers, technical experts, and marketing strategists working as one cohesive unit.</p>
+                    </div>
+                    <div class="hover-card bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center">
+                        <i data-lucide="zap" class="w-12 h-12 text-indigo-600 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3">Our Approach</h3>
+                        <p class="text-slate-600">Fast, agile, and data-driven. We adapt to the ever-changing digital landscape to keep you ahead of competition.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SERVICES PAGE ===== -->
+        <div id="services" class="page-section hidden pb-24 pt-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Our Services</h1>
+                    <p class="text-lg text-slate-600">Comprehensive digital solutions to establish your brand online and ensure your customers can find you easily.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="hover-card bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100">
+                        <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-8">
+                            <i data-lucide="code" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">Website Creation</h2>
+                        <p class="text-slate-600 leading-relaxed mb-8 text-lg">We build fast, responsive, and beautiful websites tailored to your business. From landing pages to full corporate sites — your digital storefront will look professional and convert visitors into customers.</p>
+                        <div class="space-y-5">
+                            <div class="flex gap-4 group">
+                                <i data-lucide="layout" class="text-indigo-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Custom Design</h4>
+                                    <p class="text-slate-600 text-sm">Unique designs that perfectly match your brand identity.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="smartphone" class="text-indigo-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Mobile Responsive</h4>
+                                    <p class="text-slate-600 text-sm">Flawless experience across all devices — phones to desktops.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="zap" class="text-indigo-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Fast Loading Speeds</h4>
+                                    <p class="text-slate-600 text-sm">Optimized code and assets for lightning-fast page loads.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="shield-check" class="text-indigo-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">SSL Secured</h4>
+                                    <p class="text-slate-600 text-sm">Your website delivered with full HTTPS security.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#pricing" onclick="showPage('pricing', event)" class="mt-8 inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-all text-sm">
+                            See Pricing <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+
+                    <div class="hover-card bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100">
+                        <div class="w-16 h-16 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 mb-8">
+                            <i data-lucide="search" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">GMB Creation & SEO</h2>
+                        <p class="text-slate-600 leading-relaxed mb-8 text-lg">We create and optimize your Google My Business profile to ensure you rank high in local search. Be the first choice when customers search for your services nearby.</p>
+                        <div class="space-y-5">
+                            <div class="flex gap-4 group">
+                                <i data-lucide="check-circle-2" class="text-violet-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Profile Setup & Verification</h4>
+                                    <p class="text-slate-600 text-sm">Complete setup of your GMB profile with all necessary details.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="bar-chart" class="text-violet-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Local Keyword Optimization</h4>
+                                    <p class="text-slate-600 text-sm">Targeting phrases your local customers are actually searching for.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="users" class="text-violet-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Review Management</h4>
+                                    <p class="text-slate-600 text-sm">Systems to generate positive reviews and manage your reputation.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group">
+                                <i data-lucide="map-pin" class="text-violet-500 shrink-0 mt-1 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Maps Ranking Boost</h4>
+                                    <p class="text-slate-600 text-sm">Appear in the Google Maps 3-pack for maximum visibility.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#contact" onclick="showPage('contact', event)" class="mt-8 inline-flex items-center gap-2 bg-violet-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-violet-700 transition-all text-sm">
+                            Get Started <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PRICING PAGE ===== -->
+        <div id="pricing" class="page-section hidden pb-24 pt-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-6">
+                    <p class="text-indigo-600 font-semibold tracking-widest uppercase text-xs mb-3">Transparent Pricing</p>
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Simple, Honest Pricing</h1>
+                    <p class="text-lg text-slate-600">No hidden charges. No surprises. Pick the plan that fits your business.</p>
+                </div>
+
+                <!-- Toggle: One-time / Monthly note -->
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        One-time payment · No monthly fees · Lifetime ownership
+                    </div>
+                </div>
+
+                <!-- Pricing Cards -->
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+
+                    <!-- Starter Plan -->
+                    <div class="pricing-card bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
+                                <i data-lucide="layout" class="w-5 h-5 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Starter</p>
+                                <h3 class="text-lg font-bold text-slate-900">4-Page Website</h3>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-slate-900">₹7,999</span>
+                            <span class="text-slate-500 ml-1 text-sm">one-time</span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-8 leading-relaxed">Perfect for small businesses, freelancers, and startups wanting a clean professional online presence.</p>
+
+                        <!-- What's included -->
+                        <div class="space-y-3 mb-8">
+                            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">What's Included</p>
+
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Up to 4 Pages <span class="text-slate-400 font-normal">(Home, About, Services, Contact)</span></span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Mobile Responsive Design</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Unlimited Photos & Images</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Contact Form with WhatsApp Integration</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Basic SEO Setup</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Google Maps Embed</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Social Media Links</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">7-Day Delivery</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-yes mt-0.5">✓</span>
+                                <span class="text-slate-700 text-sm font-medium">Free Revisions <span class="text-slate-400 font-normal">(up to 3)</span></span>
+                            </div>
+
+                            <div class="border-t border-dashed border-slate-200 my-3"></div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Not Included</p>
+
+                            <div class="flex items-start gap-3">
+                                <span class="feature-no mt-0.5">✗</span>
+                                <span class="text-slate-400 text-sm">Blog / News Section</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-no mt-0.5">✗</span>
+                                <span class="text-slate-400 text-sm">E-Commerce / Online Store</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-no mt-0.5">✗</span>
+                                <span class="text-slate-400 text-sm">Advanced Animations</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-no mt-0.5">✗</span>
+                                <span class="text-slate-400 text-sm">Payment Gateway Integration</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="feature-no mt-0.5">✗</span>
+                                <span class="text-slate-400 text-sm">Priority Support</span>
+                            </div>
+                        </div>
+
+                        <a href="https://wa.me/917860703473?text=Hi!%20I%27m%20interested%20in%20the%204-Page%20Website%20plan%20(₹7,999).%20Please%20share%20more%20details." target="_blank"
+                           class="w-full block text-center bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold py-3.5 px-6 rounded-2xl transition-all hover:shadow-md text-sm">
+                            Get This Plan →
+                        </a>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="pricing-card featured rounded-3xl p-8 shadow-xl text-white mt-3">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-indigo-200 font-semibold uppercase tracking-wider">Pro</p>
+                                <h3 class="text-lg font-bold text-white">8-Page Website</h3>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-white">₹15,999</span>
+                            <span class="text-indigo-200 ml-1 text-sm">one-time</span>
+                        </div>
+                        <p class="text-indigo-100 text-sm mb-8 leading-relaxed">For growing businesses that need a powerful, feature-rich website to stand out and convert more customers.</p>
+
+                        <!-- What's included -->
+                        <div class="space-y-3 mb-8">
+                            <p class="text-xs font-bold uppercase tracking-widest text-indigo-200 mb-4">Everything in Starter, plus:</p>
+
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Up to 8 Pages <span class="text-indigo-200 font-normal">(fully customized)</span></span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Full Customization — any color, font, layout</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Advanced Animations & Scroll Effects</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Blog / News Section</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Unlimited Revisions</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Advanced SEO Optimization</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Multiple Contact Forms</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Image Gallery / Portfolio Section</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Testimonials / Reviews Section</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">Priority Support & Faster Delivery</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-yellow-300 mt-0.5">✓</span>
+                                <span class="text-white text-sm font-medium">WhatsApp Chat Button</span>
+                            </div>
+
+                            <div class="border-t border-dashed border-white/20 my-3"></div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-indigo-200 mb-3">Optional Add-ons</p>
+                            <div class="flex items-start gap-3">
+                                <span class="text-indigo-200 mt-0.5">○</span>
+                                <span class="text-indigo-100 text-sm">Payment Gateway Integration <span class="text-indigo-300 font-normal">(extra charges apply)</span></span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-indigo-200 mt-0.5">○</span>
+                                <span class="text-indigo-100 text-sm">E-Commerce / Online Store <span class="text-indigo-300 font-normal">(extra charges apply)</span></span>
+                            </div>
+                        </div>
+
+                        <a href="https://wa.me/917860703473?text=Hi!%20I%27m%20interested%20in%20the%208-Page%20Website%20Pro%20plan%20(₹15,999).%20Please%20share%20more%20details." target="_blank"
+                           class="w-full block text-center bg-white text-indigo-700 hover:bg-indigo-50 font-bold py-3.5 px-6 rounded-2xl transition-all hover:shadow-xl text-sm">
+                            Get This Plan →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- GMB Add-on Banner -->
+                <div class="max-w-4xl mx-auto bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl p-8 md:p-10 text-white flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-14 h-14 bg-violet-600 rounded-2xl flex items-center justify-center shrink-0">
+                        <i data-lucide="search" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="text-2xl font-bold mb-2">Add GMB Optimization to Any Plan</h3>
+                        <p class="text-slate-400">Get your Google My Business profile fully set up, verified & optimized so customers find you on Google Maps first.</p>
+                    </div>
+                    <a href="https://wa.me/917860703473?text=Hi!%20I%27m%20interested%20in%20GMB%20Optimization.%20Please%20share%20pricing." target="_blank"
+                       class="shrink-0 bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-3 rounded-full transition-all text-sm whitespace-nowrap">
+                        Enquire Now →
+                    </a>
+                </div>
+
+                <!-- FAQ-style note -->
+                <div class="max-w-4xl mx-auto mt-10 text-center">
+                    <p class="text-slate-500 text-sm">💬 Not sure which plan is right for you? <a href="https://wa.me/917860703473" target="_blank" class="text-indigo-600 font-semibold hover:underline">Chat with us on WhatsApp</a> — we'll help you decide for free.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CONTACT PAGE ===== -->
+        <div id="contact" class="page-section hidden pb-24 pt-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="w-12 h-12 rounded-xl object-cover border-2 border-indigo-100" alt="Froxzz">
+                            <div>
+                                <p class="text-xs text-indigo-600 font-semibold uppercase tracking-widest">Contact Us</p>
+                                <h1 class="text-2xl font-bold text-slate-900">Froxzz Development</h1>
+                            </div>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Let's Build Something <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">Great Together</span></h2>
+                        <p class="text-slate-600 text-lg mb-10">Ready to take your business to the next level? Get in touch for a free consultation. We serve clients all over India.</p>
+
+                        <div class="space-y-7">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-base font-semibold text-slate-900 mb-1">Call Us</h4>
+                                    <a href="tel:+917860703473" class="text-slate-600 hover:text-indigo-600 transition-colors text-lg">+91 7860703473</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-base font-semibold text-slate-900 mb-1">Email Us</h4>
+                                    <a href="mailto:froxzzdevlopment@gmail.com" class="text-slate-600 hover:text-indigo-600 transition-colors text-lg">froxzzdevlopment@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0">
+                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-base font-semibold text-slate-900 mb-1">Location</h4>
+                                    <p class="text-slate-600 text-lg">Serving All Over India</p>
+                                </div>
+                            </div>
+
+                            <a href="https://wa.me/917860703473?text=Hi%20Froxzz%20Development!%20I%20need%20help%20with%20my%20digital%20presence." target="_blank"
+                               class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3.5 rounded-full font-semibold transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5 transform">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+                        <!-- Error -->
+                        <div id="error-message" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                            <span id="error-text">Something went wrong. Please try again or email us directly.</span>
+                        </div>
+
+                        <!-- Success -->
+                        <div id="success-message" class="hidden flex flex-col items-center justify-center text-center py-12">
+                            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6">
+                                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-2">Message Sent! 🎉</h3>
+                            <p class="text-slate-600">Thank you for reaching out. We will get back to you shortly.</p>
+                            <button onclick="resetForm()" class="mt-8 text-indigo-600 font-semibold hover:underline">Send another message</button>
+                        </div>
+
+                        <!-- Form -->
+                        <form id="contact-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
+                            <h3 class="text-xl font-bold text-slate-900 mb-6">Send Us a Message</h3>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Full Name *</label>
+                                <input type="text" id="name" name="from_name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Email Address *</label>
+                                <input type="email" id="email" name="from_email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white" placeholder="john@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number <span class="text-slate-400 text-xs">(optional)</span></label>
+                                <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white" placeholder="+91 98765 43210">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Service Interested In</label>
+                                <select id="service" name="service" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
+                                    <option>4-Page Website (₹7,999)</option>
+                                    <option>8-Page Website Pro (₹15,999)</option>
+                                    <option>Google My Business SEO</option>
+                                    <option>Website + GMB Combo</option>
+                                    <option>Other / Custom</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Message *</label>
+                                <textarea id="message" name="message" required rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white resize-none" placeholder="Tell us about your project..."></textarea>
+                            </div>
+                            <button type="submit" id="submit-btn" class="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed hover:-translate-y-0.5 transform">
+                                <span id="btn-text">Send Message</span>
+                                <i data-lucide="loader-2" id="btn-loader" class="hidden animate-spin w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer-gradient text-slate-300 border-t border-slate-800 mt-auto">
+        <div class="w-full overflow-hidden leading-none" style="height:40px;">
+            <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:100%;">
+                <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#f8fafc"/>
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="https://i.ibb.co/gMyVFtKR/froxzzlogo.jpg" class="logo-img w-10 h-10 rounded-xl object-cover border border-slate-600" alt="Froxzz Logo">
+                        <span class="text-xl font-bold text-white" style="font-family:'Syne',sans-serif;">Froxzz</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">Empowering businesses across India with modern web development and local SEO solutions.</p>
+                    <div class="flex gap-3">
+                        <a href="https://wa.me/917860703473" target="_blank" class="social-btn w-9 h-9 bg-slate-700 hover:bg-emerald-600 rounded-lg flex items-center justify-center transition-colors" title="WhatsApp">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                        <a href="mailto:froxzzdevlopment@gmail.com" class="social-btn w-9 h-9 bg-slate-700 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-colors" title="Email">
+                            <i data-lucide="mail" class="w-4 h-4 text-white"></i>
+                        </a>
+                        <a href="tel:+917860703473" class="social-btn w-9 h-9 bg-slate-700 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-colors" title="Call">
+                            <i data-lucide="phone" class="w-4 h-4 text-white"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-semibold mb-5 text-xs uppercase tracking-widest">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home"     onclick="showPage('home', event)"     class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about"    onclick="showPage('about', event)"    class="footer-link text-sm text-slate-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#services" onclick="showPage('services', event)" class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#pricing"  onclick="showPage('pricing', event)"  class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#contact"  onclick="showPage('contact', event)"  class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <!-- Services -->
+                <div>
+                    <h4 class="text-white font-semibold mb-5 text-xs uppercase tracking-widest">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#services" onclick="showPage('services', event)" class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Website Creation</a></li>
+                        <li><a href="#services" onclick="showPage('services', event)" class="footer-link text-sm text-slate-400 hover:text-white transition-colors">GMB Creation</a></li>
+                        <li><a href="#services" onclick="showPage('services', event)" class="footer-link text-sm text-slate-400 hover:text-white transition-colors">Local SEO</a></li>
+                        <li><a href="#pricing"  onclick="showPage('pricing', event)"  class="footer-link text-sm text-slate-400 hover:text-white transition-colors">View Pricing</a></li>
+                    </ul>
+                </div>
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-semibold mb-5 text-xs uppercase tracking-widest">Contact</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0"></i>
+                            <a href="mailto:froxzzdevlopment@gmail.com" class="text-sm text-slate-400 hover:text-white transition-colors break-all">froxzzdevlopment@gmail.com</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="phone" class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0"></i>
+                            <a href="tel:+917860703473" class="text-sm text-slate-400 hover:text-white transition-colors">+91 7860703473</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0"></i>
+                            <span class="text-sm text-slate-400">All Over India</span>
+                        </li>
+                    </ul>
+                    <a href="#contact" onclick="showPage('contact', event)" class="mt-6 inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2.5 rounded-full transition-colors font-semibold">
+                        Free Consultation <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-slate-700/60 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-slate-500">&copy; 2026 Froxzz Development. All rights reserved.</p>
+                <div class="flex items-center gap-2 text-slate-500 text-sm">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    Available Pan-India
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== EmailJS Config =====
+        const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
+        const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
+        const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
+        // ===== Icon Init =====
+        lucide.createIcons();
+
+        // ===== Page Navigation =====
+        const pages = ['home', 'about', 'services', 'pricing', 'contact'];
+        let currentPage = 'home';
+        let pageOrder = { home: 0, about: 1, services: 2, pricing: 3, contact: 4 };
+
+        function showPage(pageId, e) {
+            if (e) e.preventDefault();
+            if (pageId === currentPage) return;
+
+            const direction = pageOrder[pageId] > pageOrder[currentPage] ? 'slide-left' : 'slide-right';
+
+            // Hide current
+            const current = document.getElementById(currentPage);
+            current.classList.add('hidden');
+            current.classList.remove('slide-left', 'slide-right', 'page-section');
+
+            // Show new
+            const next = document.getElementById(pageId);
+            next.classList.remove('hidden');
+            next.classList.remove('slide-left', 'slide-right');
+            // Force reflow
+            void next.offsetWidth;
+            next.classList.add('page-section', direction);
+
+            currentPage = pageId;
+            history.pushState(null, null, `#${pageId}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === `#${pageId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Re-init icons in newly shown page
+            lucide.createIcons();
+        }
+
+        // Load correct page on start
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            const startPage = pages.includes(hash) ? hash : 'home';
+            // Show all hidden, then activate
+            pages.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                document.getElementById(id).classList.remove('page-section');
+            });
+            const el = document.getElementById(startPage);
+            el.classList.remove('hidden');
+            el.classList.add('page-section');
+            currentPage = startPage;
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.getAttribute('href') === `#${startPage}` ? link.classList.add('active') : link.classList.remove('active');
+            });
+
+            lucide.createIcons();
+        });
+
+        // Back/forward browser button
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (pages.includes(hash) && hash !== currentPage) {
+                showPage(hash);
+            }
+        });
+
+        // ===== Mobile Menu =====
+        let menuOpen = false;
+        function toggleMobileMenu() {
+            menuOpen = !menuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if (menuOpen) {
+                menu.classList.add('open');
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                menu.classList.remove('open');
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        // ===== Contact Form =====
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn      = document.getElementById('submit-btn');
+            const btnText  = document.getElementById('btn-text');
+            const btnLoader= document.getElementById('btn-loader');
+            const form     = document.getElementById('contact-form');
+            const successMsg = document.getElementById('success-message');
+            const errorMsg   = document.getElementById('error-message');
+
+            errorMsg.classList.add('hidden');
+            btn.disabled = true;
+            btnText.textContent = 'Sending...';
+            btnLoader.classList.remove('hidden');
+
+            const templateParams = {
+                from_name:  document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                phone:      document.getElementById('phone').value || 'Not provided',
+                service:    document.getElementById('service').value,
+                message:    document.getElementById('message').value,
+                to_email:   'froxzzdevlopment@gmail.com'
+            };
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                form.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                form.reset();
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                errorMsg.classList.remove('hidden');
+                document.getElementById('error-text').textContent =
+                    'Failed to send. Please email us at froxzzdevlopment@gmail.com or WhatsApp us.';
+                btn.disabled = false;
+                btnText.textContent = 'Send Message';
+                btnLoader.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function resetForm() {
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('btn-text').textContent = 'Send Message';
+            document.getElementById('btn-loader').classList.add('hidden');
+            document.getElementById('success-message').classList.add('hidden');
+            document.getElementById('contact-form').classList.remove('hidden');
+            document.getElementById('error-message').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
